@@ -27,8 +27,6 @@ end
 Branch.GameplayScreen = function()
 	if IsRoutine() then
 		return "ScreenGameplayShared"
-	elseif GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2() then
-		return "ScreenGameplayExtra"
 	end
 	return "ScreenGameplay"
 end
@@ -81,11 +79,7 @@ Branch.AfterProfileSave = function()
 		return SelectMusicOrCourse()
 	elseif STATSMAN:GetCurStageStats():AllFailed() then
 		-- if the player failed extra stage, don't game over.
-		if GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2() then
-			return "ScreenEvaluationSummary"
-		else
-			return "ScreenGameOver"
-		end
+		return "ScreenGameOver"
 	elseif GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() == 0 then
 		return "ScreenEvaluationSummary"
 	else

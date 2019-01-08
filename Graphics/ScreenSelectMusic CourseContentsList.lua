@@ -45,22 +45,7 @@ return Def.CourseContentsList {
 			end,
 			SetSongCommand=function(self, params)
 				if params.Song then
-					if GAMESTATE:GetCurrentCourse():GetDisplayFullTitle() == "Abomination" then
-						-- abomination hack
-						if PREFSMAN:GetPreference("EasterEggs") then
-							if params.Number % 2 ~= 0 then
-								-- turkey march
-								local artist = params.Song:GetDisplayArtist()
-								self:SetFromString( "Turkey", "", "", "", artist, "" )
-							else
-								self:SetFromSong( params.Song )
-							end
-						else
-							self:SetFromSong( params.Song )
-						end
-					else
-						self:SetFromSong( params.Song )
-					end
+					self:SetFromSong( params.Song )
 					self:diffuse( CustomDifficultyToColor(params.Difficulty) )
 -- 					self:glow("1,1,1,0.5")
 				else
@@ -68,7 +53,6 @@ return Def.CourseContentsList {
 					self:diffuse( color("#FFFFFF") )
 -- 					self:glow("1,1,1,0")
 				end
-				
 				self:finishtweening():zoomy(0):sleep(0.125*params.Number):linear(0.125):zoomy(1.1):linear(0.05):zoomx(1.1):decelerate(0.1):zoom(1)
 			end
 		},

@@ -1,5 +1,5 @@
 local curScreen = Var "LoadingScreen"
-local curStage = GAMESTATE:GetCurrentStage()
+local curStage = "Stage_1st"
 local curStageIndex = GAMESTATE:GetCurrentStageIndex()
 local t = Def.ActorFrame {}
 
@@ -18,9 +18,7 @@ t[#t+1] = Def.ActorFrame {
 			self:playcommand("Set")
 		end,
 		SetCommand=function(self)
-			if GAMESTATE:GetCurrentCourse() then
-				self:settext( curStageIndex+1 .. " / " .. GAMESTATE:GetCurrentCourse():GetEstimatedNumStages() )
-			elseif GAMESTATE:IsEventMode() then
+			if GAMESTATE:IsEventMode() then
 				self:settextf("Stage %s", curStageIndex)
 			else
 				if THEME:GetMetric(curScreen,"StageDisplayUseShortString") then

@@ -2,7 +2,7 @@ local playMode = GAMESTATE:GetPlayMode()
 if playMode ~= 'PlayMode_Regular' and playMode ~= 'PlayMode_Rave' and playMode ~= 'PlayMode_Battle' then
 	curStage = playMode
 end
-local sStage = GAMESTATE:GetCurrentStage()
+local sStage = "Stage_1st"
 local tRemap = {
 	Stage_1st		= 1,
 	Stage_2nd		= 2,

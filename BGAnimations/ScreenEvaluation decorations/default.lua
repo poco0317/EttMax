@@ -3,7 +3,7 @@ local t = LoadFallbackB()
 t[#t+1] = StandardDecorationFromFile("StageDisplay","StageDisplay")
 
 t[#t+1] = Def.ActorFrame {
-	Condition=GAMESTATE:HasEarnedExtraStage() and GAMESTATE:IsExtraStage() and not GAMESTATE:IsExtraStage2(),
+	Condition=false,
 	InitCommand=function(self)
 		self:draworder(105)
 	end,
@@ -15,7 +15,7 @@ t[#t+1] = Def.ActorFrame {
 	}
 }
 t[#t+1] = Def.ActorFrame {
-	Condition=GAMESTATE:HasEarnedExtraStage() and not GAMESTATE:IsExtraStage() and GAMESTATE:IsExtraStage2(),
+	Condition=false,
 	InitCommand=function(self)
 		self:draworder(105)
 	end,
@@ -26,12 +26,6 @@ t[#t+1] = Def.ActorFrame {
 		end
 	}
 }
-
-if ShowStandardDecoration("TryExtraStage") then
-	if GAMESTATE:HasEarnedExtraStage() then
-		t[#t+1] = StandardDecorationFromFile("TryExtraStage","TryExtraStage")
-	end
-end
 
 --Let's try this again. - Inorizushi
 

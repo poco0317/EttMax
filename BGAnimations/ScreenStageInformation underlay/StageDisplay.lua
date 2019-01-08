@@ -1,4 +1,4 @@
-local sStage = GAMESTATE:GetCurrentStage()
+local sStage = "Stage_1st"
 local tRemap = {
 	Stage_1st		= 1,
 	Stage_2nd		= 2,
