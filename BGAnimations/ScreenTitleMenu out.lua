@@ -1,4 +1,4 @@
-local fSleepTime = THEME:GetMetric( Var "LoadingScreen","ScreenInDelay")
+local fSleepTime = 0
 return Def.ActorFrame {
 	OnCommand=function(self)
 		self:sleep(0.15+fSleepTime)
