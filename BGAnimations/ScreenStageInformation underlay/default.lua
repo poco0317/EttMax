@@ -2,7 +2,7 @@ local playMode = GAMESTATE:GetPlayMode()
 if playMode ~= 'PlayMode_Regular' then
 	curStage = playMode
 end
-local sStage = "Stage_1st"
+local sStage = "Stage_Event"
 local tRemap = {
 	Stage_1st		= 1,
 	Stage_2nd		= 2,

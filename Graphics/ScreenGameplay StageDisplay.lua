@@ -26,7 +26,7 @@ local t = Def.ActorFrame {
 			self:playcommand("Set")
 		end,
 		SetCommand=function(self)
-			local curStage = "Stage_1st"
+			local curStage = "Stage_Event"
 			if GAMESTATE:IsEventMode() then
 				self:settextf("%s", curStageIndex)
 			else

@@ -1,5 +1,5 @@
 local curScreen = Var "LoadingScreen"
-local curStage = "Stage_1st"
+local curStage = "Stage_Event"
 local curStageIndex = GAMESTATE:GetCurrentStageIndex()
 local t = Def.ActorFrame {}
 

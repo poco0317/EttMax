@@ -130,7 +130,7 @@ t[#t+1] = LoadFont("_neuropol 36px") .. {
 		local curScreen = Var "LoadingScreen"
 		local curStageIndex = GAMESTATE:GetCurrentStageIndex() + 1
 		local playMode = GAMESTATE:GetPlayMode()
-		local curStage = "Stage_1st"
+		local curStage = "Stage_Event"
 		if GAMESTATE:IsEventMode() then
 			self:settextf("Event")
 		else

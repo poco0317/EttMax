@@ -12,7 +12,7 @@ for s in ivalues(Stage) do
 	if s ~= 'Stage_Next' then
 		StageDisplay[#StageDisplay+1] = LoadActor( THEME:GetPathG("ScreenEvaluation","StageDisplay/"..s) ) .. {
 			SetCommand=function(self, params)
-				local Stage = "Stage_1st"
+				local Stage = "Stage_Event"
 				local StageIndex = GAMESTATE:GetCurrentStageIndex()
 				local screen = SCREENMAN:GetTopScreen()
 				if screen and screen.GetStageStats then
