@@ -27,20 +27,10 @@ local t = Def.ActorFrame {
 		end,
 		SetCommand=function(self)
 			local curStage = GAMESTATE:GetCurrentStage()
-			if GAMESTATE:IsCourseMode() then
-				local stats = STATSMAN:GetCurStageStats()
-				if not stats then
-					return
-				end
-				local mpStats = stats:GetPlayerStageStats( GAMESTATE:GetMasterPlayerNumber() )
-				local songsPlayed = mpStats:GetSongsPassed() + 1
-				self:settextf("%i / %i", songsPlayed, GAMESTATE:GetCurrentCourse():GetEstimatedNumStages())
+			if GAMESTATE:IsEventMode() then
+				self:settextf("%s", curStageIndex)
 			else
-				if GAMESTATE:IsEventMode() then
-					self:settextf("%s", curStageIndex)
-				else
-					self:settextf("%s", ToEnumShortString(curStage))
-				end
+				self:settextf("%s", ToEnumShortString(curStage))
 			end
 			self:zoom(1.0)
 			self:diffuse(StageToColor(curStage))

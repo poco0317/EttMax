@@ -70,8 +70,7 @@ local t = Def.ActorFrame {}
 					if stepsP1 ~= nil then
 					local st = stepsP1:GetStepsType()
 					local diff = stepsP1:GetDifficulty()
-					local courseType = GAMESTATE:IsCourseMode() and SongOrCourse:GetCourseType() or nil
-					local cd = GetCustomDifficulty(st, diff, courseType)
+					local cd = GetCustomDifficulty(st, diff)
 					self:diffuse(CustomDifficultyToColor(cd))
 					else
 						self:settext("")
@@ -101,8 +100,7 @@ local t = Def.ActorFrame {}
 					if stepsP1 ~= nil then
 					local st = stepsP1:GetStepsType()
 					local diff = stepsP1:GetDifficulty()
-					local courseType = GAMESTATE:IsCourseMode() and SongOrCourse:GetCourseType() or nil
-					local cd = GetCustomDifficulty(st, diff, courseType)
+					local cd = GetCustomDifficulty(st, diff)
 					self:settext(THEME:GetString("CustomDifficulty",ToEnumShortString(diff)))
 					self:diffuse(ColorLightTone(CustomDifficultyToColor(cd)))
 					else
@@ -145,8 +143,7 @@ local t = Def.ActorFrame {}
 					if stepsP1 ~= nil then
 					local st = stepsP1:GetStepsType()
 					local diff = stepsP1:GetDifficulty()
-					local courseType = GAMESTATE:IsCourseMode() and SongOrCourse:GetCourseType() or nil
-					local cd = GetCustomDifficulty(st, diff, courseType)
+					local cd = GetCustomDifficulty(st, diff)
 					self:diffuse(CustomDifficultyToColor(cd))
 					else
 						self:settext("")
@@ -176,8 +173,7 @@ local t = Def.ActorFrame {}
 					if stepsP1 ~= nil then
 					local st = stepsP1:GetStepsType()
 					local diff = stepsP1:GetDifficulty()
-					local courseType = GAMESTATE:IsCourseMode() and SongOrCourse:GetCourseType() or nil
-					local cd = GetCustomDifficulty(st, diff, courseType)
+					local cd = GetCustomDifficulty(st, diff)
 					self:settext(THEME:GetString("CustomDifficulty",ToEnumShortString(diff)))
 					self:diffuse(ColorLightTone(CustomDifficultyToColor(cd)))
 					else
@@ -238,20 +234,10 @@ local t = Def.ActorFrame {}
 			local curStageIndex = GAMESTATE:GetCurrentStageIndex() + 1
 			local playMode = GAMESTATE:GetPlayMode()
 			local curStage = GAMESTATE:GetCurrentStage()
-			if GAMESTATE:IsCourseMode() then
-				local stats = STATSMAN:GetCurStageStats()
-				if not stats then
-					return
-				end
-				local mpStats = stats:GetPlayerStageStats( GAMESTATE:GetMasterPlayerNumber() )
-				local songsPlayed = mpStats:GetSongsPassed() + 1
-				self:settextf("%i / %i", songsPlayed, GAMESTATE:GetCurrentCourse():GetEstimatedNumStages())
+			if GAMESTATE:IsEventMode() then
+				self:settextf("Event")
 			else
-				if GAMESTATE:IsEventMode() then
-					self:settextf("Event")
-				else
-					self:settextf("%s", ToEnumShortString(curStage))
-				end
+				self:settextf("%s", ToEnumShortString(curStage))
 			end
 			self:zoom(0.5)
 			self:diffuse(StageToColor(curStage))

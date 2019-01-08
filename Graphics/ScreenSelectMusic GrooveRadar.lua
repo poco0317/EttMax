@@ -1,13 +1,7 @@
 local function radarSet(self,player)
 	local selection = nil
-	if GAMESTATE:IsCourseMode() then
-		if GAMESTATE:GetCurrentCourse() then
-			selection = GAMESTATE:GetCurrentTrail(player)
-		end
-	else
-		if GAMESTATE:GetCurrentSong() then
-			selection = GAMESTATE:GetCurrentSteps(player)
-		end
+	if GAMESTATE:GetCurrentSong() then
+		selection = GAMESTATE:GetCurrentSteps(player)
 	end
 	if selection then
 		self:SetFromRadarValues(player, selection:GetRadarValues(player))

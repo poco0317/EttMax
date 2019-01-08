@@ -16,10 +16,6 @@ return LoadActor("grades")..{
 		self:pause()
 	end,
 	SetGradeCommand=function(self, params)
-		if GAMESTATE:IsCourseMode() then
-			self:visible(false)
-			return
-		end
 		local state = grades[params.Grade] or grades.Grade_None
 		if state == nil then
 			self:visible(false)

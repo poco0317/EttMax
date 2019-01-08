@@ -38,80 +38,59 @@ Branch.AfterGameplay = function()
 		-- even though online mode isn't supported in this theme yet
 		return "ScreenNetEvaluation"
 	else
-		if GAMESTATE:IsCourseMode() then
-			if GAMESTATE:GetPlayMode() == 'PlayMode_Nonstop' then
-				return "ScreenEvaluationNonstop"
-			else	-- oni and endless are shared
-				return "ScreenEvaluationOni"
-			end
-		elseif GAMESTATE:GetPlayMode() == 'PlayMode_Rave' then
-			return "ScreenEvaluationRave"
-		else
-			return "ScreenEvaluationNormal"
-		end
+		return "ScreenEvaluationNormal"
 	end
 end
 
 Branch.AfterEvaluation = function()
-	if GAMESTATE:IsCourseMode() then
-		-- (nonstop, oni, endless eval)
-		return "ScreenNameEntry"
+	-- (normal, rave eval)
+
+	-- event mode is classic infinite.
+	if GAMESTATE:IsEventMode() then return "ScreenProfileSave" end
+
+	-- non-event mode
+	local maxStages = PREFSMAN:GetPreference("SongsPerPlay")
+	local stagesLeft = GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer()
+	local allFailed = STATSMAN:GetCurStageStats():AllFailed()
+
+	local song = GAMESTATE:GetCurrentSong()
+
+	if stagesLeft >= 1 then
+		-- enough stages left to play
+		return "ScreenProfileSave"
+	-- UNCHANGED CRAP
+	elseif song:IsLong() and maxStages <= 2 and stagesLeft < 1 and allFailed then
+		return "ScreenProfileSaveSummary"
+	elseif song:IsMarathon() and maxStages <= 3 and stagesLeft < 1 and allFailed then
+		return "ScreenProfileSaveSummary"
+	elseif maxStages >= 2 and stagesLeft < 1 and allFailed then
+		return "ScreenProfileSaveSummary"
+	elseif allFailed then
+		return "ScreenProfileSaveSummary"
+	-- END UNCHANGED CRAP
 	else
-		-- (normal, rave eval)
-
-		-- event mode is classic infinite.
-		if GAMESTATE:IsEventMode() then return "ScreenProfileSave" end
-
-		-- non-event mode
-		local maxStages = PREFSMAN:GetPreference("SongsPerPlay")
-		local stagesLeft = GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer()
-		local allFailed = STATSMAN:GetCurStageStats():AllFailed()
-
-		local song = GAMESTATE:GetCurrentSong()
-
-		if stagesLeft >= 1 then
-			-- enough stages left to play
-			return "ScreenProfileSave"
-		-- UNCHANGED CRAP
-		elseif song:IsLong() and maxStages <= 2 and stagesLeft < 1 and allFailed then
-			return "ScreenProfileSaveSummary"
-		elseif song:IsMarathon() and maxStages <= 3 and stagesLeft < 1 and allFailed then
-			return "ScreenProfileSaveSummary"
-		elseif maxStages >= 2 and stagesLeft < 1 and allFailed then
-			return "ScreenProfileSaveSummary"
-		elseif allFailed then
-			return "ScreenProfileSaveSummary"
-		-- END UNCHANGED CRAP
-		else
-			-- unknown situation
-			return "ScreenProfileSave"
-		end
+		-- unknown situation
+		return "ScreenProfileSave"
 	end
 end
 
 -- needs to be tested
 Branch.AfterProfileSave = function()
-	if GAMESTATE:IsCourseMode() then
-		-- course modes go to whatever, depending on ranking crap.
-		-- 3.9 says it goes to ScreenNameEntry all the time.
-		return "ScreenNameEntry"
-	else
-		if GAMESTATE:IsEventMode() then
-			-- infinite play
-			return SelectMusicOrCourse()
-		elseif STATSMAN:GetCurStageStats():AllFailed() then
-			-- if the player failed extra stage, don't game over.
-			if GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2() then
-				return "ScreenEvaluationSummary"
-			else
-				return "ScreenGameOver"
-			end
-		elseif GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() == 0 then
+	if GAMESTATE:IsEventMode() then
+		-- infinite play
+		return SelectMusicOrCourse()
+	elseif STATSMAN:GetCurStageStats():AllFailed() then
+		-- if the player failed extra stage, don't game over.
+		if GAMESTATE:IsExtraStage() or GAMESTATE:IsExtraStage2() then
 			return "ScreenEvaluationSummary"
 		else
-			-- when do we get here??
-			return SelectMusicOrCourse()
+			return "ScreenGameOver"
 		end
+	elseif GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer() == 0 then
+		return "ScreenEvaluationSummary"
+	else
+		-- when do we get here??
+		return SelectMusicOrCourse()
 	end
 end
 
