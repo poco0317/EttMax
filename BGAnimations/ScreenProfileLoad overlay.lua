@@ -1,13 +1,21 @@
 local x = Def.ActorFrame{
-	LoadActor( THEME:GetPathG("", "_moveon" ) )..{ InitCommand=cmd(Center); };
-};
+	LoadActor( THEME:GetPathG("", "_moveon" ) )..{
+		InitCommand=function(self)
+			self:Center()
+		end
+	}
+}
 
 x[#x+1] = Def.Actor {
 	BeginCommand=function(self)
-		if SCREENMAN:GetTopScreen():HaveProfileToLoad() then self:sleep(0.01); end;
-		self:queuecommand("Load");
-	end;
-	LoadCommand=function() SCREENMAN:GetTopScreen():Continue(); end;
-};
+		if SCREENMAN:GetTopScreen():HaveProfileToLoad() then
+			self:sleep(0.01)
+		end
+		self:queuecommand("Load")
+	end,
+	LoadCommand=function()
+		SCREENMAN:GetTopScreen():Continue()
+	end
+}
 
-return x;
+return x

@@ -1,13 +1,19 @@
-local t = Def.ActorFrame{};
+local t = Def.ActorFrame{}
 
 t[#t+1] = Def.ActorFrame{
 	Def.Quad{
-		InitCommand=cmd(Center;zoomto,SCREEN_WIDTH,120;diffuse,color("0,0,0,0.7"));
-	};
+		InitCommand=function(self)
+			self:Center():zoomto(SCREEN_WIDTH,120):diffuse(color("0,0,0,0.7"))
+		end
+	},
 	LoadActor("demonstration")..{
-		InitCommand=cmd(Center);
-		OnCommand=cmd(diffuseblink;effectperiod,1);
-	};
-};
+		InitCommand=function(self)
+			self:Center()
+		end,
+		OnCommand=function(self)
+			self:diffuseblink():effectperiod(1)
+		end
+	}
+}
 
-return t;
+return t

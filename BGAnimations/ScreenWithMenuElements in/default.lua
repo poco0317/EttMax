@@ -1,8 +1,14 @@
-local fSleepTime = THEME:GetMetric( Var "LoadingScreen","ScreenInDelay");
+local fSleepTime = THEME:GetMetric( Var "LoadingScreen","ScreenInDelay")
 return Def.ActorFrame {
-	OnCommand=cmd(sleep,0.15+fSleepTime);
+	OnCommand=function(self)
+		self:sleep(0.15+fSleepTime)
+	end,
 	Def.Quad {
-		InitCommand=cmd(Center;zoomto,SCREEN_WIDTH+1,SCREEN_HEIGHT);
-		OnCommand=cmd(diffuse,color("0,0,0,0");sleep,fSleepTime;linear,0.3;diffusealpha,0);
-	};
-};
+		InitCommand=function(self)
+			self:Center():zoomto(SCREEN_WIDTH+1,SCREEN_HEIGHT)
+		end,
+		OnCommand=function(self)
+			self:diffuse(color("0,0,0,0")):sleep(fSleepTime):linear(0.3):diffusealpha(0)
+		end
+	}
+}

@@ -1,13 +1,19 @@
-local t = Def.ActorFrame {};
+local t = Def.ActorFrame {}
 
 
 t[#t+1] = Def.Sprite {
-		name="p1difficultyicon";
-		InitCommand=cmd(playcommand,"Set"); 
-        CurrentStepsP1ChangedMessageCommand=cmd(playcommand,"Set"); 
-        CurrentCourseChangedMessageCommand=cmd(playcommand,"Set"); 
+		name="p1difficultyicon",
+		InitCommand=function(self)
+			self:playcommand("Set")
+		end,
+        CurrentStepsP1ChangedMessageCommand=function(self)
+        	self:playcommand("Set")
+        end,
+        CurrentCourseChangedMessageCommand=function(self)
+        	self:playcommand("Set")
+        end,
         SetCommand=function(self) 
-            local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1);
+            local stepsP1 = GAMESTATE:GetCurrentSteps(PLAYER_1)
 			if stepsp1 then
 					if stepsP1:GetDifficulty() == 'Difficulty_Beginner' then
 						self:Load(THEME:GetPathG("","_diconheavy.png"))
@@ -24,6 +30,6 @@ t[#t+1] = Def.Sprite {
 					end
 				end
 			end
-		};
+		}
 
 return t

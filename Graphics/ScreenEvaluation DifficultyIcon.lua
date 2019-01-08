@@ -2,8 +2,12 @@ local Player = ...
 if not Player then error("ScreenEvaluation DifficultyIcon requires a Player") end
 
 return LoadActor(THEME:GetPathG("ScreenSelectMusic","DifficultyIcon/_difficulty icons"))..{
-	InitCommand=cmd(pause);
-	BeginCommand=cmd(playcommand,"Set");
+	InitCommand=function(self)
+		self:pause()
+	end,
+	BeginCommand=function(self)
+		self:playcommand("Set")
+	end,
 	SetCommand=function(self)
 		local song = GAMESTATE:GetCurrentSong()
 		if song then
@@ -16,5 +20,5 @@ return LoadActor(THEME:GetPathG("ScreenSelectMusic","DifficultyIcon/_difficulty 
 		else
 			self:visible(false)
 		end
-	end;
-};
+	end
+}

@@ -8,6 +8,6 @@ return LoadFont("Common Normal")..{
 				SONGMAN:GetNumSongGroups(),
 				SONGMAN:GetNumCourses()
 			)
-		);
+		)
 	end
 }

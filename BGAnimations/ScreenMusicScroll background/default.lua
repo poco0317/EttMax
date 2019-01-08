@@ -1,3 +1,7 @@
 return Def.ActorFrame{
-	LoadActor("bg")..{ InitCommand=cmd(Center); };
-};
+	LoadActor("bg")..{
+		InitCommand=function(self)
+			self:Center()
+		end
+	}
+}

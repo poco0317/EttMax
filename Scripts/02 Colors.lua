@@ -57,9 +57,9 @@ GameColor = {
 		JudgmentLine_Miss	= color("#ff3c3c"),
 		JudgmentLine_MaxCombo	= color("#212121")
 	},
-};
+}
 
-GameColor.Difficulty["Crazy"] = GameColor.Difficulty["Hard"];
-GameColor.Difficulty["Freestyle"] = GameColor.Difficulty["Easy"];
-GameColor.Difficulty["Nightmare"] = GameColor.Difficulty["Challenge"];
-GameColor.Difficulty["HalfDouble"] = GameColor.Difficulty["Medium"];
+GameColor.Difficulty["Crazy"] = GameColor.Difficulty["Hard"]
+GameColor.Difficulty["Freestyle"] = GameColor.Difficulty["Easy"]
+GameColor.Difficulty["Nightmare"] = GameColor.Difficulty["Challenge"]
+GameColor.Difficulty["HalfDouble"] = GameColor.Difficulty["Medium"]

@@ -1,11 +1,13 @@
-local curScreen = Var "LoadingScreen";
-local curStage = GAMESTATE:GetCurrentStage();
-local curStageIndex = GAMESTATE:GetCurrentStageIndex();
-local t = Def.ActorFrame {};
+local curScreen = Var "LoadingScreen"
+local curStage = GAMESTATE:GetCurrentStage()
+local curStageIndex = GAMESTATE:GetCurrentStageIndex()
+local t = Def.ActorFrame {}
 
 t[#t+1] = Def.ActorFrame {
 	LoadFont("_neuropol 36px") .. {
-		InitCommand=cmd(y,-1;shadowlength,1;);
+		InitCommand=function(self)
+			self:y(-1):shadowlength(1)
+		end,
 		BeginCommand=function(self)
 			local top = SCREENMAN:GetTopScreen()
 			if top then
@@ -14,25 +16,25 @@ t[#t+1] = Def.ActorFrame {
 				end
 			end
 			self:playcommand("Set")
-		end;
+		end,
 		SetCommand=function(self)
 			if GAMESTATE:GetCurrentCourse() then
-				self:settext( curStageIndex+1 .. " / " .. GAMESTATE:GetCurrentCourse():GetEstimatedNumStages() );
+				self:settext( curStageIndex+1 .. " / " .. GAMESTATE:GetCurrentCourse():GetEstimatedNumStages() )
 			elseif GAMESTATE:IsEventMode() then
-				self:settextf("Stage %s", curStageIndex);
+				self:settextf("Stage %s", curStageIndex)
 			else
 				if THEME:GetMetric(curScreen,"StageDisplayUseShortString") then
-				  self:settextf("%s", ToEnumShortString(curStage));
-				  self:zoom(1);
+				  self:settextf("%s", ToEnumShortString(curStage))
+				  self:zoom(1)
 				else
-				  self:settextf("%s Stage", ToEnumShortString(curStage));
-				  self:zoom(1);
-				end;
-			end;
-			-- StepMania is being stupid so we have to do this here;
-			self:diffuse(StageToColor(curStage));
-			self:strokecolor(ColorDarkTone(StageToColor(curStage)));
-		end;
-	};
-};
+				  self:settextf("%s Stage", ToEnumShortString(curStage))
+				  self:zoom(1)
+				end
+			end
+			-- StepMania is being stupid so we have to do this here
+			self:diffuse(StageToColor(curStage))
+			self:strokecolor(ColorDarkTone(StageToColor(curStage)))
+		end
+	}
+}
 return t

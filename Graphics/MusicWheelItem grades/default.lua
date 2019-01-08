@@ -9,16 +9,18 @@ local grades = {
 	Grade_Tier07 = 6,
 	Grade_Failed = 7,
 	Grade_None = nil
-};
+}
 
 return LoadActor("grades")..{
-	InitCommand=cmd(pause);
+	InitCommand=function(self)
+		self:pause()
+	end,
 	SetGradeCommand=function(self, params)
 		if GAMESTATE:IsCourseMode() then
-			self:visible(false);
-			return;
-		end;
-		local state = grades[params.Grade] or grades.Grade_None;
+			self:visible(false)
+			return
+		end
+		local state = grades[params.Grade] or grades.Grade_None
 		if state == nil then
 			self:visible(false)
 		else
@@ -27,5 +29,5 @@ return LoadActor("grades")..{
 			if params.PlayerNumber == PLAYER_2 then state = state+1 end
 			self:setstate(state)
 		end
-	end;
-};
+	end
+}

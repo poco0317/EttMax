@@ -1,19 +1,32 @@
-local gc = Var("GameCommand");
-local ind = gc:GetIndex();
-local delay = ind / 10;
+local gc = Var("GameCommand")
+local ind = gc:GetIndex()
+local delay = ind / 10
 
-local path = "_screenselectdifficulty icons/";
+local path = "_screenselectdifficulty icons/"
 return Def.ActorFrame {
-	InitCommand=cmd(zoom,0);
-	OnCommand=cmd(queuecommand,"In");
-	InCommand=cmd(sleep,delay;zoom,1;addx,-SCREEN_CENTER_X;bounceend,0.35;addx,SCREEN_CENTER_X);
-	OffCommand=cmd(stoptweening;sleep,delay;bouncebegin,0.25;addx,-SCREEN_CENTER_X;runcommandsonleaves,cmd(stoptweening;sleep,0.35;linear,0.25;diffusealpha,0));
+	InitCommand=function(self)
+		self:zoom(0)
+	end,
+	OnCommand=function(self)
+		self:queuecommand("In")
+	end,
+	InCommand=function(self)
+		self:sleep(delay):zoom(1):addx(-SCREEN_CENTER_X):bounceend(0.35):addx(SCREEN_CENTER_X)
+	end,
 	LoadActor( path .. "info hard" )..{
-		InitCommand=cmd(y,-108;vertalign,bottom);
-	};
+		InitCommand=function(self)
+			self:y(-108):vertalign(bottom)
+		end
+	},
 	LoadActor( path .. "picture hard" )..{
-		InitCommand=cmd(y,-108;valign,0);
-		OnCommand=cmd(zoomy,0;sleep,1;bounceend,0.3;zoomy,1);
-		OffCommand=cmd(sleep,0.6;bouncebegin,0.3;zoomy,0);
-	};
+		InitCommand=function(self)
+			self:y(-108):valign(0)
+		end,
+		OnCommand=function(self)
+			self:zoomy(0):sleep(1):bounceend(0.3):zoomy(1)
+		end,
+		OffCommand=function(self)
+			self:sleep(0.6):bouncebegin(0.3):zoomy(0)
+		end
+	}
 }
