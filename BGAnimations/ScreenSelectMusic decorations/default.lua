@@ -84,6 +84,7 @@ t[#t+1] = Def.ActorFrame {
 	InitCommand=function(self)
 		self:visible(true)
 	end,
+	-- The banner frame sprite
 	LoadActor("_bannerframe") .. {
 		InitCommand=function(self)
 			self:x(SCREEN_CENTER_X-160):y(SCREEN_CENTER_Y-88):draworder(140)
@@ -96,7 +97,7 @@ t[#t+1] = Def.ActorFrame {
 		end
 	},
 
-	
+	-- BPM in the banner frame
 	LoadActor("BPMDisplay label") .. {
 		InitCommand=function(self)
 			self:x(SCREEN_CENTER_X-195+20):y(SCREEN_CENTER_Y-130):draworder(140)
@@ -109,7 +110,7 @@ t[#t+1] = Def.ActorFrame {
 		end
 	},
 
-
+	-- Sort name in the banner frame
 	LoadFont("_impact 24px") .. { 
         InitCommand=function(self)
         	self:zoom(0.6):x(SCREEN_CENTER_X-122):y(SCREEN_CENTER_Y-131):uppercase(true):horizalign(left):maxwidth(SCREEN_WIDTH):diffuse(color("#979797")):visible(true):draworder(1000):shadowlength(1)
@@ -136,6 +137,42 @@ t[#t+1] = Def.ActorFrame {
 					self:playcommand("Refresh")
                end 
         end
+	},
+
+	-- The banner itself
+	Def.Sprite {
+		InitCommand=function(self)
+			self:x(SCREEN_CENTER_X-170):y(SCREEN_CENTER_Y-72):draworder(139):visible(true)
+			self:scaletoclipped(capWideScale(get43size(263), 263), capWideScale(get43size(82), 82)):diffusealpha(1)
+		end,
+		OffCommand=function(self)
+			self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
+		end,
+		OnCommand=function(self)
+			self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
+			self:scaletoclipped(capWideScale(get43size(263), 263), capWideScale(get43size(82), 82)):diffusealpha(1)
+			self:queuecommand("ChangeBanner")
+		end,
+		CurrentSongChangedMessageCommand=function(self)
+			self:queuecommand("ChangeBanner")
+		end,
+		ChangeBannerCommand=function(self)
+			local song = GAMESTATE:GetCurrentSong()
+			if song then
+				local bnpath = GAMESTATE:GetCurrentSong():GetBannerPath()
+				if not bnpath then
+					bnpath = THEME:GetPathG("Common", "fallback banner")
+				end
+				self:LoadBackground(bnpath)
+			else
+				local bnpath = SONGMAN:GetSongGroupBannerPath(SCREENMAN:GetTopScreen():GetMusicWheel():GetSelectedSection())
+				if not bnpath or bnpath == "" then
+					bnpath = THEME:GetPathG("Common", "fallback banner")
+				end
+				self:LoadBackground(bnpath)
+			end
+			self:scaletoclipped(capWideScale(get43size(263), 263), capWideScale(get43size(82), 82)):diffusealpha(1)
+		end
 	}
 }
 
@@ -153,13 +190,27 @@ local function CDTitleUpdate(self)
 		end;
 	else
 		cdtitle:visible(false)
-	end;
-	
-	self:zoom(scale(height,32,480,1,32/480))
+	end
+	local height = cdtitle:GetHeight()
+	local width = cdtitle:GetWidth()
+
+	if height >= 60 and width >= 75 then
+		if height * (75 / 60) >= width then
+			cdtitle:zoom(60 / height)
+		else
+			cdtitle:zoom(75 / width)
+		end
+	elseif height >= 60 then
+		cdtitle:zoom(60 / height)
+	elseif width >= 75 then
+		cdtitle:zoom(75 / width)
+	else
+		cdtitle:zoom(1)
+	end
 end
 t[#t+1] = Def.ActorFrame {
 	OnCommand=function(self)
-		self:draworder(105):x(SCREEN_CENTER_X-64):y(SCREEN_CENTER_Y-87):zoom(0):sleep(0.5):decelerate(0.25):zoom(1):SetUpdateFunction(CDTitleUpdate)
+		self:draworder(105):x(SCREEN_CENTER_X-64):y(SCREEN_CENTER_Y+8):zoom(0):sleep(0.5):decelerate(0.25):zoom(1):SetUpdateFunction(CDTitleUpdate)
 	end,
 	OffCommand=function(self)
 		self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
