@@ -41,33 +41,7 @@ Branch.AfterGameplay = function()
 end
 
 Branch.AfterEvaluation = function()
-	-- event mode is classic infinite.
-	if GAMESTATE:IsEventMode() then return "ScreenProfileSave" end
-
-	-- non-event mode
-	local maxStages = PREFSMAN:GetPreference("SongsPerPlay")
-	local stagesLeft = GAMESTATE:GetSmallestNumStagesLeftForAnyHumanPlayer()
-	local allFailed = STATSMAN:GetCurStageStats():AllFailed()
-
-	local song = GAMESTATE:GetCurrentSong()
-
-	if stagesLeft >= 1 then
-		-- enough stages left to play
-		return "ScreenProfileSave"
-	-- UNCHANGED CRAP
-	elseif song:IsLong() and maxStages <= 2 and stagesLeft < 1 and allFailed then
-		return "ScreenProfileSaveSummary"
-	elseif song:IsMarathon() and maxStages <= 3 and stagesLeft < 1 and allFailed then
-		return "ScreenProfileSaveSummary"
-	elseif maxStages >= 2 and stagesLeft < 1 and allFailed then
-		return "ScreenProfileSaveSummary"
-	elseif allFailed then
-		return "ScreenProfileSaveSummary"
-	-- END UNCHANGED CRAP
-	else
-		-- unknown situation
-		return "ScreenProfileSave"
-	end
+	return "ScreenProfileSave"
 end
 
 -- needs to be tested
