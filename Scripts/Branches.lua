@@ -41,8 +41,6 @@ Branch.AfterGameplay = function()
 end
 
 Branch.AfterEvaluation = function()
-	-- (normal, rave eval)
-
 	-- event mode is classic infinite.
 	if GAMESTATE:IsEventMode() then return "ScreenProfileSave" end
 

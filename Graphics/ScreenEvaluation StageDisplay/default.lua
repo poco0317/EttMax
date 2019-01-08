@@ -9,7 +9,7 @@ local StageDisplay = Def.ActorFrame{
 
 for s in ivalues(Stage) do
 
-	if s ~= 'Stage_Next' and s ~= 'Stage_Nonstop' and s ~= 'Stage_Oni' and s ~= 'Stage_Endless' then
+	if s ~= 'Stage_Next' then
 		StageDisplay[#StageDisplay+1] = LoadActor( THEME:GetPathG("ScreenEvaluation","StageDisplay/"..s) ) .. {
 			SetCommand=function(self, params)
 				local Stage = "Stage_1st"

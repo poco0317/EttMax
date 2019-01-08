@@ -1,5 +1,5 @@
 local playMode = GAMESTATE:GetPlayMode()
-if playMode ~= 'PlayMode_Regular' and playMode ~= 'PlayMode_Rave' and playMode ~= 'PlayMode_Battle' then
+if playMode ~= 'PlayMode_Regular' then
 	curStage = playMode
 end
 local sStage = "Stage_1st"
