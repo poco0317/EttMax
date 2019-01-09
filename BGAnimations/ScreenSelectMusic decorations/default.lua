@@ -363,7 +363,130 @@ t[#t+1] = LoadFont("_neuropol 36px") .. {
 	
 t[#t+1] = StandardDecorationFromFileOptional("StageDisplay","StageDisplay")
 t[#t+1] = StandardDecorationFromFileOptional("BPMDisplay","BPMDisplay")
-t[#t+1] = StandardDecorationFromFileOptional("GrooveRadar","GrooveRadar")
+--t[#t+1] = StandardDecorationFromFileOptional("GrooveRadar","GrooveRadar")
+
+local function rotationForIndex(index, maxindex)
+	return math.pi / 2 + math.pi * (2 / maxindex) * index
+end
+
+local function makeATriangle(vertices, size, index, maxindex, prettycolor)
+	local x = 0
+	size = size * 2
+	vertices[#vertices+1] = {{math.cos(rotationForIndex(index,maxindex))*size, math.sin(rotationForIndex(index,maxindex))*size, 0}, prettycolor}
+end
+
+local function makeTheRadarBackground(vertices, size, fans, prettycolor)
+	local x = 0
+	for i = 1, fans do
+		vertices[#vertices+1] = {{math.cos(rotationForIndex(i,fans))*size, math.sin(rotationForIndex(i,fans))*size, 0.5}, prettycolor}
+	end
+end
+local radarsteps
+-- A groove radar which is made up of the skillsets of a file instead of the weird groove radar values
+-- It's an actormultivertex
+t[#t+1] = Def.ActorFrame {
+	Def.Sprite {
+		InitCommand=function(self)
+			self:xy(SCREEN_CENTER_X-160, SCREEN_CENTER_Y+90)
+			self:zoom(0.4)
+			self:Load(THEME:GetPathG("","GroovyRadar.png"))
+		end,
+		OnCommand=function(self)
+			self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
+		end,
+		OffCommand=function(self)
+			self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
+		end
+	},
+--[[
+	Def.ActorMultiVertex {
+		Name = "SkillsetBackground",
+		InitCommand=function(self)
+			self:xy(SCREEN_CENTER_X-160, SCREEN_CENTER_Y+90)
+			local verts = {}
+			local colr = color(".5,.5,.5")
+			makeTheRadarBackground(verts, 60, #ms.SkillSets-1, colr)
+			self:SetVertices(verts)
+			self:SetDrawState( {Mode = "DrawMode_Fan", First = 1, Num = #verts} )
+		end,
+		OnCommand=function(self)
+			self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
+		end,
+		OffCommand=function(self)
+			self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
+		end
+	},]]
+	
+	Def.ActorMultiVertex {
+		Name = "SkillsetRadar",
+		InitCommand=function(self)
+			self:SetVertices({})
+			self:SetDrawState( {Mode = "DrawMode_Fan", First = 0, Num = 0} )
+			self:xy(SCREEN_CENTER_X-160, SCREEN_CENTER_Y+90)
+		end,
+		OnCommand=function(self)
+			self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
+		end,
+		OffCommand=function(self)
+			self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
+		end,
+		CurrentSongChangedMessageCommand=function(self)
+			self:queuecommand("RadarUpdate")
+		end,
+		RadarUpdateCommand = function(self)
+			radarsteps = GAMESTATE:GetCurrentSteps(PLAYER_1)
+			if radarsteps ~= nil then
+				local verts = {}
+				local skillsetValues = {}
+				for i = 2, #ms.SkillSets do
+					skillsetValues[i+1] = radarsteps:GetMSD(getCurRateValue(), i)
+				end
+				for i = 2, #ms.SkillSets do
+					local colr = byMSD(skillsetValues[i+1])
+					makeATriangle(verts, skillsetValues[i+1], i, #ms.SkillSets-1, colr)
+				end
+
+				self:SetVertices(verts)
+				self:SetDrawState( {Mode = "DrawMode_Fan", First = 1, Num = #verts} )
+			else
+				self:SetVertices({})
+				self:SetDrawState( {Mode = "DrawMode_Triangles", First = 0, Num = 0} )
+			end
+		end
+	}
+}
+
+local function makeSkillsetLabel(i, top)
+	local r = 
+		LoadFont("Common Normal") ..
+		{
+			Name = "SkillSet"..i,
+			InitCommand=function(self)
+				self:settext(ms.SkillSetsShort[i])
+				--self:xy(SCREEN_CENTER_X-160, SCREEN_CENTER_Y+90)
+				self:xy(SCREEN_CENTER_X-160+math.cos(rotationForIndex(i,top))*85, SCREEN_CENTER_Y+90+math.sin(rotationForIndex(i,top))*85)
+				self:diffuse(color("0.5,0.7,0.7"))
+				self:zoom(0.3)
+			end,
+			OnCommand=function(self)
+				self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
+			end,
+			OffCommand=function(self)
+				self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
+			end,
+			CurrentSongChangedMessageCommand=function(self)
+				self:queuecommand("RadarUpdate")
+			end,
+			RadarUpdateCommand = function(self)
+				self:visible(GAMESTATE:GetCurrentSteps(PLAYER_1) ~= nil)
+			end
+		}
+	return r
+end
+for i = 2, #ms.SkillSets do
+	t[#t+1] = makeSkillsetLabel(i, #ms.SkillSets-1)
+end
+
 t[#t+1] = StandardDecorationFromFileOptional("AvailableDifficulties", "AvailableDifficulties")
 t[#t+1] = StandardDecorationFromFileOptional("CourseContentsList","CourseContentsList")
 t[#t+1] = StandardDecorationFromFileOptional("SongOptions","SongOptionsText") .. {
