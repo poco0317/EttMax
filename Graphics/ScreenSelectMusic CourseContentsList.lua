@@ -41,7 +41,7 @@ return Def.CourseContentsList {
 
 		Def.TextBanner {
 			InitCommand=function(self)
-				self:x(24):y(1):Load("TextBannerCourse"):SetFromString("", "", "", "", "", ""):zoom(0.8)
+				self:x(24):y(1):Load("TextBanner"):SetFromString("", "", "", "", "", ""):zoom(0.8)
 			end,
 			SetSongCommand=function(self, params)
 				if params.Song then
