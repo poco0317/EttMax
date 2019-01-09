@@ -4,5 +4,7 @@ The initial commit is shamelessly ripped from https://github.com/ListenerJubatus
 
 This will probably be kept up to date with release builds of Etterna.
 
+Many elements of this theme are lifted, copied, or inspired from the default Etterna theme, Til Death.
+
 # What is Etterna?
 Why are you here? https://github.com/etternagame/etterna
