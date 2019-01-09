@@ -209,7 +209,7 @@ local function CDTitleUpdate(self)
 end
 t[#t+1] = Def.ActorFrame {
 	OnCommand=function(self)
-		self:draworder(105):x(SCREEN_CENTER_X-64):y(SCREEN_CENTER_Y+8):zoom(0):sleep(0.5):decelerate(0.25):zoom(1):SetUpdateFunction(CDTitleUpdate)
+		self:draworder(105):x(SCREEN_CENTER_X+30):y(SCREEN_CENTER_Y-110):zoom(0):sleep(0.5):decelerate(0.25):zoom(1):SetUpdateFunction(CDTitleUpdate)
 	end,
 	OffCommand=function(self)
 		self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
