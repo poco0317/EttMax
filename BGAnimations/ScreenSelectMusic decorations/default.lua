@@ -11,7 +11,6 @@ local difficulty_icon_map= {
 
 local difficulty_positions= {
 	[PLAYER_1]= {_screen.cx-268, _screen.cy+10},
-	[PLAYER_2]= {_screen.cx-53, _screen.cy+10}
 }
 
 local function difficulty_icon(pn)
@@ -227,7 +226,6 @@ t[#t+1] = Def.ActorFrame {
 }
 	
 -- Difficulty frames
-
 t[#t+1] = LoadActor("_dfp1") .. {
 	InitCommand=function(self)
 		self:x(SCREEN_CENTER_X-250):y(SCREEN_CENTER_Y+11):visible(true)
@@ -241,7 +239,7 @@ t[#t+1] = LoadActor("_dfp1") .. {
 	}
 
 t[#t+1] = Def.ActorFrame{ 
-	difficulty_icon(PLAYER_1), difficulty_icon(PLAYER_2),
+	difficulty_icon(PLAYER_1),
 	OffCommand=function(self)
 		self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
 	end,
@@ -265,10 +263,11 @@ t[#t+1] = LoadActor("_diffframep1") .. {
 -- Difficulty numbers
 t[#t+1] = LoadFont("_neuropol 36px") .. { 
           InitCommand=function(self)
-          	self:x(SCREEN_CENTER_X-250+32):y(SCREEN_CENTER_Y+11-10):horizalign(right):diffuse(PlayerColor(PLAYER_1)):zoom(0.6)
+          	self:x(SCREEN_CENTER_X-170):y(SCREEN_CENTER_Y+193):horizalign(right):diffuse(PlayerColor(PLAYER_1)):zoom(0.45)
           end,
 		  OnCommand=function(self)
-		  	self:diffusealpha(0):sleep(0.3):smooth(0.2):diffusealpha(1)
+			self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
+		  	self:diffusealpha(0):smooth(0.2):diffusealpha(1)
 		  end,
 		  OffCommand=function(self)
 		  	self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
@@ -276,9 +275,6 @@ t[#t+1] = LoadFont("_neuropol 36px") .. {
           CurrentStepsP1ChangedMessageCommand=function(self)
           	self:playcommand("Set"):playcommand("Transition")
           end,
-		  TransitionCommand=function(self)
-		  	self:finishtweening():diffusealpha(0):smooth(0.2):diffusealpha(1)
-		  end,
 		  PlayerJoinedMessageCommand=function(self)
 		  	self:playcommand("Set"):diffusealpha(0):smooth(0.3):diffusealpha(1)
 		  end,
@@ -290,7 +286,7 @@ t[#t+1] = LoadFont("_neuropol 36px") .. {
 			local song = GAMESTATE:GetCurrentSong();
 			if song then 
 				if stepsP1 ~= nil then
-					self:settext(stepsP1:GetMeter())
+					self:settextf("Overall: %05.2f", stepsP1:GetMSD(getCurRateValue(), 1))
 				else
 					self:settext("")
 				end
@@ -299,7 +295,7 @@ t[#t+1] = LoadFont("_neuropol 36px") .. {
 			end
           end
 }
-	
+
 t[#t+1] = StandardDecorationFromFileOptional("StageDisplay","StageDisplay")
 t[#t+1] = StandardDecorationFromFileOptional("BPMDisplay","BPMDisplay")
 --t[#t+1] = StandardDecorationFromFileOptional("GrooveRadar","GrooveRadar")
@@ -369,7 +365,7 @@ t[#t+1] = Def.ActorFrame {
 		OffCommand=function(self)
 			self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
 		end,
-		CurrentSongChangedMessageCommand=function(self)
+		CurrentStepsP1ChangedMessageCommand=function(self)
 			self:queuecommand("RadarUpdate")
 		end,
 		RadarUpdateCommand = function(self)
