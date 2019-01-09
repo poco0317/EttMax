@@ -239,18 +239,6 @@ t[#t+1] = LoadActor("_dfp1") .. {
 		self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
 	end
 	}
-	
-t[#t+1] = LoadActor("_dfp2") .. {
-	InitCommand=function(self)
-		self:x(SCREEN_CENTER_X-250+180):y(SCREEN_CENTER_Y+11):visible(true)
-	end,
-	OffCommand=function(self)
-		self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
-	end,
-	OnCommand=function(self)
-		self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
-	end
-	}	
 
 t[#t+1] = Def.ActorFrame{ 
 	difficulty_icon(PLAYER_1), difficulty_icon(PLAYER_2),
@@ -272,19 +260,7 @@ t[#t+1] = LoadActor("_diffframep1") .. {
 	OnCommand=function(self)
 		self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
 	end
-	}
-	
-t[#t+1] = LoadActor("_diffframep2") .. {
-	InitCommand=function(self)
-		self:x(SCREEN_CENTER_X-240+160):y(SCREEN_CENTER_Y+195)
-	end,
-	OffCommand=function(self)
-		self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
-	end,
-	OnCommand=function(self)
-		self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
-	end
-	}		
+	}	
 
 -- Difficulty numbers
 t[#t+1] = LoadFont("_neuropol 36px") .. { 
@@ -323,43 +299,6 @@ t[#t+1] = LoadFont("_neuropol 36px") .. {
 			end
           end
 }
-
-t[#t+1] = LoadFont("_neuropol 36px") .. { 
-          InitCommand=function(self)
-          	self:x(SCREEN_CENTER_X-250+180-32):y(SCREEN_CENTER_Y+11-10):horizalign(left):diffuse(PlayerColor(PLAYER_2)):zoom(0.6)
-          end,
-		  OnCommand=function(self)
-		  	self:diffusealpha(0):sleep(0.3):smooth(0.2):diffusealpha(1)
-		  end,
-		  OffCommand=function(self)
-		  	self:bouncebegin(0.5):addx(-SCREEN_WIDTH*0.6)
-		  end,
-          CurrentStepsP2ChangedMessageCommand=function(self)
-          	self:playcommand("Set"):playcommand("Transition")
-          end,
-		  TransitionCommand=function(self)
-		  	self:finishtweening():diffusealpha(0):smooth(0.2):diffusealpha(1)
-		  end,
-		  PlayerJoinedMessageCommand=function(self)
-		  	self:playcommand("Set"):diffusealpha(0):smooth(0.3):diffusealpha(1)
-		  end,
-          ChangedLanguageDisplayMessageCommand=function(self)
-          	self:playcommand("Set")
-          end,
-          SetCommand=function(self)
-			stepsP2 = GAMESTATE:GetCurrentSteps(PLAYER_2)
-			local song = GAMESTATE:GetCurrentSong();
-			if song then 
-				if stepsP2 ~= nil then
-					self:settext(stepsP2:GetMeter())
-				else
-					self:settext("")
-				end
-			else
-				self:settext("")
-			end
-          end
-}
 	
 t[#t+1] = StandardDecorationFromFileOptional("StageDisplay","StageDisplay")
 t[#t+1] = StandardDecorationFromFileOptional("BPMDisplay","BPMDisplay")
@@ -387,7 +326,7 @@ local radarsteps
 t[#t+1] = Def.ActorFrame {
 	Def.Sprite {
 		InitCommand=function(self)
-			self:xy(SCREEN_CENTER_X-160, SCREEN_CENTER_Y+90)
+			self:xy(SCREEN_CENTER_X-100, SCREEN_CENTER_Y+90)
 			self:zoom(0.4)
 			self:Load(THEME:GetPathG("","GroovyRadar.png"))
 		end,
@@ -422,7 +361,7 @@ t[#t+1] = Def.ActorFrame {
 		InitCommand=function(self)
 			self:SetVertices({})
 			self:SetDrawState( {Mode = "DrawMode_Fan", First = 0, Num = 0} )
-			self:xy(SCREEN_CENTER_X-160, SCREEN_CENTER_Y+90)
+			self:xy(SCREEN_CENTER_X-100, SCREEN_CENTER_Y+90)
 		end,
 		OnCommand=function(self)
 			self:addx(-SCREEN_WIDTH*0.6):bounceend(0.5):addx(SCREEN_WIDTH*0.6)
@@ -462,9 +401,9 @@ local function makeSkillsetLabel(i, top)
 		{
 			Name = "SkillSet"..i,
 			InitCommand=function(self)
-				self:settext(ms.SkillSetsShort[i])
+				self:settext(ms.SkillSets[i])
 				--self:xy(SCREEN_CENTER_X-160, SCREEN_CENTER_Y+90)
-				self:xy(SCREEN_CENTER_X-160+math.cos(rotationForIndex(i,top))*85, SCREEN_CENTER_Y+90+math.sin(rotationForIndex(i,top))*85)
+				self:xy(SCREEN_CENTER_X-100+math.cos(rotationForIndex(i,top))*95, SCREEN_CENTER_Y+90+math.sin(rotationForIndex(i,top))*95)
 				self:diffuse(color("0.5,0.7,0.7"))
 				self:zoom(0.3)
 			end,
