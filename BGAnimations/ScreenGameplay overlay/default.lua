@@ -51,10 +51,10 @@ t[#t+1] = Def.ActorFrame {
 					local cd = GetCustomDifficulty(st, diff)
 					self:diffuse(CustomDifficultyToColor(cd))
 					else
-						self:settext("")
+						self:diffuse(color("0,0,0,0"))
 					end
 				else
-					self:settext("")
+					self:diffusealpha(0)
 				end
 			  end	
 	},

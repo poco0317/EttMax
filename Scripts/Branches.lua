@@ -20,7 +20,7 @@ Branch.StartGame = function()
 		return "ScreenTitleMenu"
 	end
 
-	return PREFSMAN:GetPreference("ShowCaution") and "ScreenCaution" or "ScreenSelectStyle"
+	return "ScreenSelectStyle"
 end
 
 -- gameplay branch that takes extra stage into account

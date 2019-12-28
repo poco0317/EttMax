@@ -111,6 +111,20 @@ function GetEditModeSubScreens()
 								"ScreenMiniMenuInsertCourseAttack," .. "ScreenMiniMenuCourseDisplay," .. "ScreenEditOptions"
 end
 
+local jgmlclstr = {
+	JudgmentLine_W1 = "Marvelous",
+	JudgmentLine_W2 = "Perfect",
+	JudgmentLine_W3 = "Great",
+	JudgmentLine_W4 = "Good",
+	JudgmentLine_W5 = "Boo",
+	JudgmentLine_Miss = 'Miss',
+	JudgmentLine_Held = "OK"
+}
+
+function JudgmentLineToLocalizedString(j)
+	return jgmlclstr[j]
+end
+
 function GetCoursesToShowRanking()
 	local CoursesToShowRanking = PREFSMAN:GetPreference("CoursesToShowRanking")
 	if CoursesToShowRanking ~= "" then
