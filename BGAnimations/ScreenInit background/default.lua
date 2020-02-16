@@ -38,7 +38,7 @@ t[#t+1] = Def.ActorFrame {
 			end
 		},
 		LoadFont("Common Normal") .. {
-			Text="Created by " .. THEME:GetThemeAuthor(),
+			Text="Modified by " .. THEME:GetThemeAuthor(),
 			InitCommand=function(self)
 				self:y(24):zoom(0.75)
 			end,
